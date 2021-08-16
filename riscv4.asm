@@ -52,12 +52,12 @@ pV:
 	addi    t0, t0, -1                 	# (--t0) -> t0 = t0 + (-1)imm
 	ble 	t0, zero, exit			    # if t2(a1[i]) <= 0 ? sort : continue
 	addi    a1, a1, 4                   # a1 = a1 + 4
-	j	    pV
+	j	    pV                          # jump to pV
 
 	
 exit:           
 	li      a7, 10                      # Exits the program with code 0
-	ecall
+	ecall                               # syscall
 	
 loadAddr:
 	la      a1, vector                  # load address of "vector" in a1
