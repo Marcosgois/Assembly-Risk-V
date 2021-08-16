@@ -6,7 +6,7 @@
 .text
 	jal     loadAddr                    # jump to loadAddr
 	la      a1, vector                  # load address of "vector" in a1       
-	li      t1, 10                      # t1 = value for iterations   
+	li      t1, 5                      # t1 = value for iterations   
 	sw      t1, 0(a1)                   # First position in vector is t1 ( 10 )
 	addi    a1, a1, 4                   # a1 = a1 + 4
     
@@ -26,16 +26,20 @@
 	addi    t0, t0, -1                 	# (--t0) -> t0 = t0 + (-1)imm
 	lw	    t1, -4(a1)			        # load the value of a1[index-1] in t1 to compare
 
-	ble 	a0, t1, sort			    # if t2(a1[i]) <= a0 ? sort : continue
+	blt 	a0, t1, sort			    # if t1(a1[i]) <= a0 ? sort : continue
 	sw	    a0, (a1)			        # load input value to vector
 	addi    a1, a1, 4                   # a1 = a1 + 4
-	addi	t2, t2, 4			        # [index]
+	addi	t2, t2, 4			        # [index+4]
 	j	    readInput			        # return to readInput
 
 sort:
-	addi	t2, t2, -4			        # [index-4]
-	sw	    a0, -4(a1)			        # [index-4]
-	sw	    t1, (a1)			
+	mv  	t3, a1 						# t3 = Index
+	addi	t3, t3, -4			        # t3[index-4]
+	sw	a0, -4(a1)			        # a1[index-4] = actual user input
+	sw	t1, (a1)					# a1[index] = greater number
+	lw	t1, (t3) 					# T1 = #a1
+	
+	
 	bge  	t2, zero, sort			    # if t2 >= 0 ? sort : continue
 	j	    readInput
 	
